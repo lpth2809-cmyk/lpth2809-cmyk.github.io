@@ -8,6 +8,7 @@
   const mondayOf = date => { const value = new Date(date); value.setDate(value.getDate() - ((value.getDay() + 6) % 7)); return value; };
   let weekStart = mondayOf(today);
   let timeStep = 1;
+  let scheduleView = 'classic';
 
   const escape = value => String(value || '').replace(/[&<>'"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' })[char]);
   const minutes = time => { const [hour, minute] = time.split(':').map(Number); return hour * 60 + minute; };
@@ -67,9 +68,16 @@
     const nativeFilters = page?.querySelector('.schedule-filters');
     const nativeCard = page?.querySelector('.schedule-card');
     if (!page || !nativeFilters || !nativeCard) return;
-    nativeFilters.style.display = 'none'; nativeCard.style.display = 'none';
     let host = page.querySelector('#schedule-enhancer');
     if (!host) { host = document.createElement('section'); host.id = 'schedule-enhancer'; host.className = 'card schedule-enhancer'; nativeFilters.before(host); }
+    const renderViewToggle = () => `<div class="schedule-view-toggle"><button data-view="classic" class="${scheduleView === 'classic' ? 'active' : ''}">Danh sách</button><button data-view="timetable" class="${scheduleView === 'timetable' ? 'active' : ''}">Thời gian biểu</button></div>`;
+    if (scheduleView === 'classic') {
+      nativeFilters.style.display = ''; nativeCard.style.display = '';
+      host.innerHTML = `<div class="schedule-classic-heading"><span>Lịch học</span><h2>Xem theo danh sách</h2></div>${renderViewToggle()}`;
+      host.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => { scheduleView = button.dataset.view; render(); }));
+      return;
+    }
+    nativeFilters.style.display = 'none'; nativeCard.style.display = 'none';
     try {
       const { sessions, classrooms } = await readData();
       const classMap = new Map(classrooms.map(item => [item.id, item]));
@@ -100,13 +108,20 @@
           const height = Math.max(28, (item.end - item.start) / 60 * pixelsPerHour);
           const style = `top:${top}px;height:${height}px;left:3px;width:calc(100% - 6px);--class-color:${escape(room?.color || '#5b6fc7')}`;
           const conflicts = item.conflicts.map(conflict => `<i class="week-conflict" style="top:${(conflict.start - item.start) / (item.end - item.start) * 100}%;height:${(conflict.end - conflict.start) / (item.end - item.start) * 100}%"></i>`).join('');
-          return `<article class="week-event ${item.conflicts.length ? 'has-conflict' : ''}" style="${style}">${conflicts}<b>${escape(room?.name || 'Lớp đã xóa')}</b></article>`;
+          return `<button type="button" data-session-id="${item.id}" class="week-event ${item.conflicts.length ? 'has-conflict' : ''}" style="${style}">${conflicts}<b>${escape(room?.name || 'Lớp đã xóa')}</b></button>`;
         }).join('');
         return `<div class="week-column ${key(dates[index]) === key(today) ? 'is-today' : ''}"><div class="week-lines">${lines}</div>${events}</div>`;
       }).join('');
-      host.innerHTML = `<div class="schedule-enhancer-head"><div><span>Thời gian biểu tuần</span><h2>${fullDate(weekStart)} – ${fullDate(weekEnd)}</h2></div><div class="week-controls"><button data-action="previous">← Tuần trước</button><button data-action="today" class="primary">Hôm nay</button><button data-action="next">Tuần sau →</button></div></div><div class="timetable-options" aria-label="Chọn khung giờ"><span>Khung giờ</span><button data-step="1" class="${timeStep === 1 ? 'active' : ''}">1 giờ</button><button data-step="2" class="${timeStep === 2 ? 'active' : ''}">2 giờ</button></div><div class="week-scroll"><div class="week-board"><div class="week-corner">Giờ</div><div class="week-heads">${dayHeaders}</div><div class="week-hours" style="height:${gridHeight}px">${hourLabels}</div><div class="week-columns" style="height:${gridHeight}px">${columns}</div></div></div>`;
+      host.innerHTML = `<div class="schedule-enhancer-head"><div><span>Thời gian biểu tuần</span><h2>${fullDate(weekStart)} – ${fullDate(weekEnd)}</h2></div><div class="week-controls"><button data-action="previous">← Tuần trước</button><button data-action="today" class="primary">Hôm nay</button><button data-action="next">Tuần sau →</button></div></div>${renderViewToggle()}<div class="timetable-options" aria-label="Chọn khung giờ"><span>Khung giờ</span><button data-step="1" class="${timeStep === 1 ? 'active' : ''}">1 giờ</button><button data-step="2" class="${timeStep === 2 ? 'active' : ''}">2 giờ</button></div><div class="week-scroll"><div class="week-board"><div class="week-corner">Giờ</div><div class="week-heads">${dayHeaders}</div><div class="week-hours" style="height:${gridHeight}px">${hourLabels}</div><div class="week-columns" style="height:${gridHeight}px">${columns}</div></div></div>`;
       host.querySelectorAll('[data-action]').forEach(button => button.addEventListener('click', () => { const action = button.dataset.action; if (action === 'today') weekStart = mondayOf(today); else weekStart.setDate(weekStart.getDate() + (action === 'next' ? 7 : -7)); render(); }));
       host.querySelectorAll('[data-step]').forEach(button => button.addEventListener('click', () => { timeStep = Number(button.dataset.step); render(); }));
+      host.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => { scheduleView = button.dataset.view; render(); }));
+      host.querySelectorAll('[data-session-id]').forEach(button => button.addEventListener('click', () => {
+        const session = sessions.find(item => item.id === button.dataset.sessionId);
+        const room = classMap.get(session?.classId);
+        const row = [...nativeCard.querySelectorAll('.session-row')].find(item => item.querySelector('.session-time strong')?.textContent === session?.startTime && item.querySelector('.session-main strong')?.textContent === room?.name);
+        row?.querySelectorAll('button.icon-btn')[0]?.click();
+      }));
     } catch (error) { host.innerHTML = '<p class="schedule-empty">Không thể tải thời gian biểu.</p>'; }
   }
   new MutationObserver(records => { if (records.some(record => !record.target.closest?.('#schedule-enhancer') && !record.target.closest?.('#data-management-enhancer'))) render(); }).observe(document.documentElement, { childList: true, subtree: true });
