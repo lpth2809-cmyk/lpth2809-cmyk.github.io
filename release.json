@@ -1,0 +1,4 @@
+{
+  "version": "2026.08.20-sync-safety",
+  "notes": "Ship conflict-safe cloud synchronization and refresh installed web apps."
+}
