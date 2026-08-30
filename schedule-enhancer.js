@@ -36,6 +36,12 @@
       tx.oncomplete = resolve; tx.onerror = () => reject(tx.error);
     };
   });
+  function ensureScheduleStyle() {
+    if (document.querySelector('#schedule-inline-style')) return;
+    const style = document.createElement('style'); style.id = 'schedule-inline-style';
+    style.textContent = '#schedule-enhancer{margin:0 0 18px!important;padding:18px 20px!important;min-height:0!important;background:#fff!important;border:1px solid #e6e9f0!important;border-radius:16px!important;box-shadow:none!important}.schedule-classic-heading{margin:0 0 12px!important}.schedule-classic-heading span{display:block!important;color:#8f98aa!important;font-size:10px!important;font-weight:800!important;letter-spacing:.8px!important;text-transform:uppercase!important}.schedule-classic-heading h2{margin:4px 0 0!important;color:#29354b!important;font-size:17px!important}.schedule-view-toggle{display:inline-flex!important;gap:4px!important;width:auto!important;margin:0!important;padding:4px!important;background:#f0f2f7!important;border-radius:10px!important}.schedule-view-toggle button{display:block!important;margin:0!important;border:0!important;border-radius:7px!important;background:transparent!important;color:#718097!important;padding:7px 12px!important;font-size:12px!important;font-weight:750!important;line-height:1.2!important;cursor:pointer!important}.schedule-view-toggle button.active{background:#fff!important;color:#5064ba!important;box-shadow:0 1px 5px #202c4218!important}.schedule-enhancer-head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:16px!important;margin-bottom:14px!important}.week-event{font:inherit!important;text-align:left!important;cursor:pointer!important}.week-event:hover{filter:brightness(.97)!important}';
+    document.head.append(style);
+  }
 
   function enhanceSettings() {
     const page = document.querySelector('.data-page');
@@ -63,13 +69,14 @@
   }
 
   async function render() {
+    ensureScheduleStyle();
     enhanceSettings();
     const page = document.querySelector('.page');
     const nativeFilters = page?.querySelector('.schedule-filters');
     const nativeCard = page?.querySelector('.schedule-card');
     if (!page || !nativeFilters || !nativeCard) return;
     let host = page.querySelector('#schedule-enhancer');
-    if (!host) { host = document.createElement('section'); host.id = 'schedule-enhancer'; host.className = 'card schedule-enhancer'; nativeFilters.before(host); }
+    if (!host) { host = document.createElement('section'); host.id = 'schedule-enhancer'; host.className = 'schedule-enhancer'; nativeFilters.before(host); }
     const renderViewToggle = () => `<div class="schedule-view-toggle"><button data-view="classic" class="${scheduleView === 'classic' ? 'active' : ''}">Danh sách</button><button data-view="timetable" class="${scheduleView === 'timetable' ? 'active' : ''}">Thời gian biểu</button></div>`;
     if (scheduleView === 'classic') {
       nativeFilters.style.display = ''; nativeCard.style.display = '';
