@@ -120,6 +120,10 @@
         return `<div class="week-column ${key(dates[index]) === key(today) ? 'is-today' : ''}"><div class="week-lines">${lines}</div>${events}</div>`;
       }).join('');
       host.innerHTML = `<div class="schedule-enhancer-head"><div><span>Thời gian biểu tuần</span><h2>${fullDate(weekStart)} – ${fullDate(weekEnd)}</h2></div><div class="week-controls"><button data-action="previous">← Tuần trước</button><button data-action="today" class="primary">Hôm nay</button><button data-action="next">Tuần sau →</button></div></div>${renderViewToggle()}<div class="timetable-options" aria-label="Chọn khung giờ"><span>Khung giờ</span><button data-step="1" class="${timeStep === 1 ? 'active' : ''}">1 giờ</button><button data-step="2" class="${timeStep === 2 ? 'active' : ''}">2 giờ</button></div><div class="week-scroll"><div class="week-board"><div class="week-corner">Giờ</div><div class="week-heads">${dayHeaders}</div><div class="week-hours" style="height:${gridHeight}px">${hourLabels}</div><div class="week-columns" style="height:${gridHeight}px">${columns}</div></div></div>`;
+      const switcher = host.querySelector('.schedule-view-toggle');
+      const options = host.querySelector('.timetable-options');
+      switcher.style.cssText = 'display:flex;align-items:center;gap:4px;width:max-content;margin:0 0 14px;padding:4px;background:#f0f2f7;border-radius:10px;clear:both';
+      options.style.cssText = 'display:flex;align-items:center;gap:7px;margin:0 0 14px;padding:0;min-height:34px;clear:both';
       host.querySelectorAll('[data-action]').forEach(button => button.addEventListener('click', () => { const action = button.dataset.action; if (action === 'today') weekStart = mondayOf(today); else weekStart.setDate(weekStart.getDate() + (action === 'next' ? 7 : -7)); render(); }));
       host.querySelectorAll('[data-step]').forEach(button => button.addEventListener('click', () => { timeStep = Number(button.dataset.step); render(); }));
       host.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => { scheduleView = button.dataset.view; render(); }));
