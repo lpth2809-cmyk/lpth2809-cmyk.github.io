@@ -137,10 +137,7 @@
       host.querySelectorAll('[data-step]').forEach(button => button.addEventListener('click', () => { timeStep = Number(button.dataset.step); render(); }));
       host.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => { scheduleView = button.dataset.view; render(); }));
       host.querySelectorAll('[data-session-id]').forEach(button => button.addEventListener('click', () => {
-        const session = sessions.find(item => item.id === button.dataset.sessionId);
-        const room = classMap.get(session?.classId);
-        const row = [...nativeCard.querySelectorAll('.session-row')].find(item => item.querySelector('.session-time strong')?.textContent === session?.startTime && item.querySelector('.session-main strong')?.textContent === room?.name);
-        row?.querySelectorAll('button.icon-btn')[0]?.click();
+        window.dispatchEvent(new CustomEvent('classo:edit-session', { detail: { sessionId: button.dataset.sessionId } }));
       }));
     } catch (error) { host.innerHTML = '<p class="schedule-empty">Không thể tải thời gian biểu.</p>'; }
   }
