@@ -1,10 +1,10 @@
 {
   "source": "Classo-Source-Push-20260725/dist",
-  "indexSha256": "f1b32c6fddb5d4c493de7186ec79125211e3e2eae570b11c8872186639c3d501",
+  "indexSha256": "543d4cfbd77d9f33d9eeeaa235363d610ccbc2814841856ef6c0897200799e63",
   "verifiedFiles": [
     "apple-touch-icon.png",
-    "assets/index-Ch0E_EKQ.css",
-    "assets/index-CXFxAMj3.js",
+    "assets/index-CQ3uph45.js",
+    "assets/index-r_HeNzfz.css",
     "classo-icon-source.png",
     "favicon-32.png",
     "icon-192.png",
@@ -17,5 +17,5 @@
     "sw.js",
     "workbox-0bb07689.js"
   ],
-  "generatedAt": "2026-10-01T22:06:35.554Z"
+  "generatedAt": "2026-10-01T22:19:53.985Z"
 }
