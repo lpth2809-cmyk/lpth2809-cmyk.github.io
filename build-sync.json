@@ -1,16 +1,21 @@
 {
   "source": "Classo-Source-Push-20260725/dist",
-  "indexSha256": "806f608cbd710816675bd68c3ef95b8c6d517087f6cfb94026d322636af9a116",
+  "indexSha256": "f1b32c6fddb5d4c493de7186ec79125211e3e2eae570b11c8872186639c3d501",
   "verifiedFiles": [
+    "apple-touch-icon.png",
+    "assets/index-Ch0E_EKQ.css",
+    "assets/index-CXFxAMj3.js",
+    "classo-icon-source.png",
+    "favicon-32.png",
+    "icon-192.png",
+    "icon-512.png",
     "index.html",
+    "manifest.webmanifest",
+    "registerSW.js",
     "release.json",
-    "schedule-enhancer.js",
-    "schedule-enhancer.css",
-    "schedule-view.css",
-    "schedule-enhancer.js",
-    "assets/index-Cd657IwJ.js",
-    "assets/index-CBqPp1Jn.css",
-    "registerSW.js"
+    "server/index.js",
+    "sw.js",
+    "workbox-0bb07689.js"
   ],
-  "generatedAt": "2026-10-01T20:11:42.743Z"
+  "generatedAt": "2026-10-01T22:06:35.554Z"
 }
