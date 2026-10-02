@@ -1,12 +1,12 @@
 {
   "source": "Classo-Source-Push-20260725/dist",
-  "indexSha256": "cabc4933ea3b1e555b38cf984efe5e0c786350774f63c061da4cd47eb3704d95",
+  "indexSha256": "a28111db826e632e01b055d06e68d9aa65f797897decbb2be30121e0ac6692ec",
   "verifiedFiles": [
     "apple-touch-icon.png",
     "assets/cat-cafe-pc/cat-cafe-room.webp",
     "assets/cat-cafe-pc/cat-cafe-summary.webp",
-    "assets/index-CrATwuB5.css",
-    "assets/index-D_zKRLte.js",
+    "assets/index-BL6PkjyR.css",
+    "assets/index-Cpsz0xMH.js",
     "classo-icon-source.png",
     "favicon-32.png",
     "icon-192.png",
@@ -18,5 +18,5 @@
     "sw.js",
     "workbox-d1213528.js"
   ],
-  "generatedAt": "2026-10-02T18:51:43.786Z"
+  "generatedAt": "2026-10-02T19:08:29.013Z"
 }
