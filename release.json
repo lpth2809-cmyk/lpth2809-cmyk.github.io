@@ -1,4 +1,4 @@
 {
-  "version": "Classo 1.5.0",
-  "notes": "Bảo toàn lịch khi cập nhật thời gian, hiển thị lớp nghỉ và tổng giờ lương rõ hơn, nâng cấp toàn bộ giao diện cùng popup Có gì mới."
+  "version": "Classo 1.6.0",
+  "notes": "Khôi phục tự động các buổi học bị mất từ dữ liệu 1.4.0, bật lại lớp sẽ sinh lịch đúng, đồng bộ đáng tin cậy hơn và làm mới popup Có gì mới."
 }
